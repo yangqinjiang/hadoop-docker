@@ -6,7 +6,7 @@ services:
         hostname: hadoop2
         tty: true
         ports: # 暴露端口信息  - "宿主机端口:容器暴露端口"
-            - "50070:50070"
+            - "1570:50070" # 更换端口
         extra_hosts: 
             - "hadoop2:172.20.0.2"
             - "hadoop3:172.20.0.3"
@@ -28,8 +28,8 @@ services:
         container_name: hadoop3
         hostname: hadoop3
         tty: true
-        ports: # 暴露端口信息  - "宿主机端口:容器暴露端口"
-            - "50075:50075"
+        # ports: # 暴露端口信息  - "宿主机端口:容器暴露端口"
+        #     - "50075:50075"
         depends_on: 
             - hadoop2
         extra_hosts: 
@@ -69,6 +69,36 @@ services:
                 reservations:
                     cpus: '1'
                     memory: 1024M
+    # zooKeeper 集群
+    zookeeper:
+        image: 'bitnami/zookeeper:latest'
+        container_name: zookeeper
+        hostname: zookeeper
+        ports:
+          - '2181:2181'
+        networks: 
+            fixed:
+                ipv4_address: "172.20.0.5"
+        environment:
+          - ALLOW_ANONYMOUS_LOGIN=yes
+    # kafka
+    kafka:
+        image: 'bitnami/kafka:latest'
+        container_name: kafka
+        hostname: kafka
+        ports:
+            - '9092:9092'
+        networks: 
+            fixed:
+                ipv4_address: "172.20.0.6"
+        environment:
+            - KAFKA_BROKER_ID=1
+            - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+            - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+            - ALLOW_PLAINTEXT_LISTENER=yes
+        depends_on:
+            - zookeeper
 
 networks:
     fixed:
