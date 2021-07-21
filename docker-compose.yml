@@ -18,10 +18,10 @@ services:
             resources:
                 limits:
                     cpus: '1' 
-                    memory: 1024M
+                    memory: 512M
                 reservations:
                     cpus: '1'
-                    memory: 1024M
+                    memory: 512M
 
     hadoop3:
         image: yangqinjiang/hadoop-slave:latest
@@ -43,10 +43,10 @@ services:
             resources:
                 limits:
                     cpus: '1' 
-                    memory: 1024M
+                    memory: 512M
                 reservations:
                     cpus: '1'
-                    memory: 1024M
+                    memory: 512M
     hadoop4:
         image: yangqinjiang/hadoop-slave:latest
         container_name: hadoop4
@@ -65,10 +65,10 @@ services:
             resources:
                 limits:
                     cpus: '1' # 15% of a single core
-                    memory: 1024M
+                    memory: 512M
                 reservations:
                     cpus: '1'
-                    memory: 1024M
+                    memory: 512M
     # zooKeeper 集群
     zookeeper:
         image: 'bitnami/zookeeper:latest'
