@@ -1,0 +1,78 @@
+version: "3.8"
+services: 
+    hadoop2:
+        image: yangqinjiang/hadoop-master:latest
+        container_name: hadoop2
+        hostname: hadoop2
+        tty: true
+        ports: # 暴露端口信息  - "宿主机端口:容器暴露端口"
+            - "50070:50070"
+        extra_hosts: 
+            - "hadoop2:172.20.0.2"
+            - "hadoop3:172.20.0.3"
+            - "hadoop4:172.20.0.4"
+        networks: 
+            fixed:
+                ipv4_address: "172.20.0.2"
+        deploy:
+            resources:
+                limits:
+                    cpus: '1' 
+                    memory: 1024M
+                reservations:
+                    cpus: '1'
+                    memory: 1024M
+
+    hadoop3:
+        image: yangqinjiang/hadoop-slave:latest
+        container_name: hadoop3
+        hostname: hadoop3
+        tty: true
+        ports: # 暴露端口信息  - "宿主机端口:容器暴露端口"
+            - "50075:50075"
+        depends_on: 
+            - hadoop2
+        extra_hosts: 
+            - "hadoop2:172.20.0.2"
+            - "hadoop3:172.20.0.3"
+            - "hadoop4:172.20.0.4"
+        networks: 
+            fixed:
+                ipv4_address: "172.20.0.3"
+        deploy:
+            resources:
+                limits:
+                    cpus: '1' 
+                    memory: 1024M
+                reservations:
+                    cpus: '1'
+                    memory: 1024M
+    hadoop4:
+        image: yangqinjiang/hadoop-slave:latest
+        container_name: hadoop4
+        hostname: hadoop4
+        tty: true
+        depends_on: 
+            - hadoop2
+        extra_hosts: 
+            - "hadoop2:172.20.0.2"
+            - "hadoop3:172.20.0.3"
+            - "hadoop4:172.20.0.4"
+        networks: 
+            fixed:
+                ipv4_address: "172.20.0.4"
+        deploy:
+            resources:
+                limits:
+                    cpus: '1' # 15% of a single core
+                    memory: 1024M
+                reservations:
+                    cpus: '1'
+                    memory: 1024M
+
+networks:
+    fixed:
+        ipam:
+            driver: default
+            config: 
+                - subnet: "172.20.0.0/24"
