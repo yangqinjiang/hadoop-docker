@@ -6,7 +6,7 @@ services:
         hostname: hadoop1
         tty: true
         ports: # 暴露端口信息  - "宿主机端口:容器暴露端口"
-            - "1570:50070" # 更换端口
+            - "1570:50070" # 更换端口, windows 10有权限限制, 所以用1570
         networks: 
             fixed:
                 ipv4_address: "172.21.0.2"
@@ -39,6 +39,8 @@ services:
                 ipv4_address: "172.21.0.3"
         environment:
           - ALLOW_ANONYMOUS_LOGIN=yes
+        volumes:
+            - ./zookeeper-persistence:/bitnami/zookeeper          
     # kafka
     kafka:
         image: 'bitnami/kafka:latest'
@@ -63,6 +65,8 @@ services:
             - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
             - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
             - ALLOW_PLAINTEXT_LISTENER=yes
+        volumes:
+            - ./kafka-persistence/:/bitnami/kafka            
         depends_on:
             - zookeeper
 
