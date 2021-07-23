@@ -70,6 +70,34 @@ services:
         depends_on:
             - zookeeper
 
+#  elasticsearch:6.8.17        
+    elasticsearch:
+        image: 'elasticsearch:6.8.17'
+        container_name: elasticsearch
+        hostname: elasticsearch
+        ports:
+            - '1571:9200'
+            - '1572:9300'
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5' 
+                    memory: 512M
+                reservations:
+                    cpus: '0.5'
+                    memory: 512M
+        networks: 
+            fixed:
+                ipv4_address: "172.21.0.5"
+        environment:
+            - node.name=es01
+            - discovery.type=single-node
+            - bootstrap.memory_lock=true
+            - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        volumes:
+            - ./elasticsearch:/usr/share/elasticsearch/data
+        depends_on:
+            - hadoop1                
 networks:
     fixed:
         ipam:
