@@ -96,11 +96,11 @@ services:
             - bootstrap.memory_lock=true
             - "ES_JAVA_OPTS=-Xms900m -Xmx900m"
         #https://blog.csdn.net/weixin_30675247/article/details/96877923
-        # user: root #注意看这里,添加了这一行后就可以解决
-        # volumes:
-        #     - ./elasticsearch:/usr/share/elasticsearch/data
-        # depends_on:
-        #     - hadoop1
+        user: root #注意看这里,添加了这一行后就可以解决
+        volumes:
+            - ./elasticsearch:/usr/share/elasticsearch/data
+        depends_on:
+            - hadoop1
 networks:
     fixed:
         ipam:
