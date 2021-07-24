@@ -7,6 +7,7 @@ services:
         tty: true
         ports: # 暴露端口信息  - "宿主机端口:容器暴露端口"
             - "1570:50070" # 更换端口, windows 10有权限限制, 所以用1570
+            - "9000:9000"
         networks: 
             fixed:
                 ipv4_address: "172.21.0.2"
@@ -105,17 +106,16 @@ services:
             - hadoop1
 
     #hbase
-    # docker pull pierrezemb/hbase-docker:standalone-1.3.1
     hbase:
-        image: pierrezemb/hbase-docker:standalone-1.3.1
+        image: yangqinjiang/hbase-standalone:latest
         container_name: hbase
         hostname: hbase
         links:
             - zooKeeper
+            - hadoop1
         depends_on: 
-            - kafka
-        logging:
-            driver: "none"
+            - zooKeeper
+            - hadoop1
         ports:
             - "16010:16010"
         deploy:
@@ -129,14 +129,14 @@ services:
         networks: 
             fixed:
                 ipv4_address: "172.21.0.6"
+        user: root #注意看这里,添加了这一行后就可以解决
+        volumes:
+            - ./hbase:/data2
         expose:
-            - "8080"
-            - "9090"
             - "16000"
             - "16010"
-            - "16020"
+            - "60010"
             - "16030"
-        command: ["/wait-for-it.sh", "zookeeper:2181", "-t", "10", "--", "/usr/bin/supervisord"]
 
 
 networks:
