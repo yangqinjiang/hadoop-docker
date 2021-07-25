@@ -29,6 +29,8 @@ services:
         hostname: zookeeper
         ports:
           - '2181:2181'
+        extra_hosts: 
+          - "hbase:172.21.0.6"
         deploy:
             resources:
                 limits:
@@ -111,11 +113,14 @@ services:
         container_name: hbase
         hostname: hbase
         links:
-            - zooKeeper
+            - zookeeper
             - hadoop1
         depends_on: 
-            - zooKeeper
+            - zookeeper
             - hadoop1
+        extra_hosts: 
+            - "zookeeper:172.21.0.3"
+            - "hadoop1:172.21.0.2"
         ports:
             - "16010:16010"
         deploy:
