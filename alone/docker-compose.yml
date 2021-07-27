@@ -103,7 +103,7 @@ services:
         #https://blog.csdn.net/weixin_30675247/article/details/96877923
         user: root #注意看这里,添加了这一行后就可以解决
         volumes:
-            - ./elasticsearch:/usr/share/elasticsearch/data
+            - ./docker-data/elasticsearch:/usr/share/elasticsearch/data
         depends_on:
             - hadoop1
 
@@ -147,6 +147,8 @@ services:
     #redis
     redis:
         image: docker.io/bitnami/redis:6.2
+        container_name: redis
+        hostname: redis
         environment:
           # ALLOW_EMPTY_PASSWORD is recommended only for development.
           - ALLOW_EMPTY_PASSWORD=yes
