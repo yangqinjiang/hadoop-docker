@@ -122,7 +122,7 @@ services:
         ports:
           - 16000:16000
           - 16010:16010
-      hbase-regionserver:
+    hbase-regionserver:
         image: harisekhon/hbase:2.1
         command: regionserver
         deploy:
@@ -132,12 +132,12 @@ services:
                     memory: 1024M
                 reservations:
                     cpus: '0.25'
-                    memory: 100M        
+                    memory: 100M
         ports:
           - 16030:16030
           - 16201:16201
           - 16301:16301
-      hbase-thrift:
+    hbase-thrift:
         image: harisekhon/hbase:2.1
         command: thrift
         deploy:
@@ -151,7 +151,7 @@ services:
         ports:
           - 9090:9090
           - 9095:9095
-      hbase-stargate:
+    hbase-stargate:
         image: harisekhon/hbase:2.1
         command: stargate
         deploy:
@@ -161,7 +161,7 @@ services:
                     memory: 1024M
                 reservations:
                     cpus: '0.25'
-                    memory: 100M        
+                    memory: 100M
         ports:
           - 8080:8080
           - 8085:8085
