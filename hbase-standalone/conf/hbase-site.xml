@@ -1,11 +1,11 @@
 <configuration>
   <property>
     <name>hbase.rootdir</name>
-    <value>hdfs://hadoop1:9000/HBase</value>
+    <value>file:///data2/hbase</value>
   </property>
   <property>
     <name>hbase.cluster.distributed</name>
-    <value>false</value>
+    <value>true</value>
   </property>
  <!-- 0.98 后的新变动，之前版本没有.port,默认端口为 60000 -->
     <property>

@@ -108,21 +108,9 @@ services:
             - hadoop1
 
     #hbase
-    hbase:
-        image: yangqinjiang/hbase-standalone:2.1.0
-        container_name: hbase
-        hostname: hbase
-        links:
-            - zookeeper
-            - hadoop1
-        depends_on: 
-            - zookeeper
-            - hadoop1
-        extra_hosts: 
-            - "zookeeper:172.21.0.3"
-            - "hadoop1:172.21.0.2"
-        ports:
-            - "16010:16010"
+    hbase-master:
+        image: harisekhon/hbase:2.1
+        command: master
         deploy:
             resources:
                 limits:
@@ -131,18 +119,52 @@ services:
                 reservations:
                     cpus: '0.25'
                     memory: 100M
-        networks: 
-            fixed:
-                ipv4_address: "172.21.0.6"
-        user: root #注意看这里,添加了这一行后就可以解决
-        volumes:
-            - ./docker-data/hbase:/data2
-        expose:
-            - "16000"
-            - "16010"
-            - "60010"
-            - "16030"
-
+        ports:
+          - 16000:16000
+          - 16010:16010
+      hbase-regionserver:
+        image: harisekhon/hbase:2.1
+        command: regionserver
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5' 
+                    memory: 1024M
+                reservations:
+                    cpus: '0.25'
+                    memory: 100M        
+        ports:
+          - 16030:16030
+          - 16201:16201
+          - 16301:16301
+      hbase-thrift:
+        image: harisekhon/hbase:2.1
+        command: thrift
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5' 
+                    memory: 1024M
+                reservations:
+                    cpus: '0.25'
+                    memory: 100M
+        ports:
+          - 9090:9090
+          - 9095:9095
+      hbase-stargate:
+        image: harisekhon/hbase:2.1
+        command: stargate
+        deploy:
+            resources:
+                limits:
+                    cpus: '0.5' 
+                    memory: 1024M
+                reservations:
+                    cpus: '0.25'
+                    memory: 100M        
+        ports:
+          - 8080:8080
+          - 8085:8085
 
     #redis
     redis:
