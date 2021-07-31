@@ -109,7 +109,7 @@ services:
 
     #hbase
     hbase:
-        image: yangqinjiang/hbase-standalone:latest
+        image: yangqinjiang/hbase-standalone:2.1.0
         container_name: hbase
         hostname: hbase
         links:

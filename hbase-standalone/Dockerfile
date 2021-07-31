@@ -1,12 +1,12 @@
 
 FROM yangqinjiang/centos7-base:latest as build
-ENV HBASE_VERSION=1.3.1
+ENV HBASE_VERSION=2.1.0
 ADD hbasefiles/jdk-8u65-linux-x64.tar.gz /usr/local/
 ADD hbasefiles/hbase-${HBASE_VERSION}-bin.tar.gz /usr/local/
 
 
 FROM yangqinjiang/centos7-base:latest
-ENV HBASE_VERSION=1.3.1
+ENV HBASE_VERSION=2.1.0
 COPY --from=build /usr/local/jdk1.8.0_65 /usr/local/jdk1.8
 COPY --from=build /usr/local/hbase-${HBASE_VERSION} /usr/local/hbase-${HBASE_VERSION}
 RUN yum install -y which sudo && yum clean all 

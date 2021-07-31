@@ -1,0 +1,7 @@
+FROM iojs:onbuild
+COPY ./app.js ./app.js
+COPY ./app1.sh ./app1.sh
+COPY ./package.json ./package.json
+RUN chmod +x ./app1.sh
+EXPOSE 3000
+ENTRYPOINT ["./app1.sh"]

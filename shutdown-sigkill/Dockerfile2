@@ -1,0 +1,11 @@
+FROM iojs:onbuild
+COPY ./app.js ./app.js
+COPY ./app2.sh ./app2.sh
+COPY ./package.json ./package.json
+RUN chmod +x ./app2.sh
+EXPOSE 3000
+ENTRYPOINT ["./app2.sh"]
+
+
+# docker build --no-cache -t signal-app2 -f Dockerfile2 .
+# docker run -it --rm -p 3000:3000 --name="my-app2" signal-app2

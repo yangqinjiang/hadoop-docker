@@ -3,6 +3,8 @@
 FROM centos:7
 MAINTAINER yangqinjiang@qq.com
 
+ENV TZ Asia/Shanghai
+
 RUN yum install -y openssh-server sudo && \
     sed -i 's/UsePAM yes/UsePAM no/g' /etc/ssh/sshd_config && \
     yum install -y openssh-clients && \
@@ -14,7 +16,10 @@ RUN yum install -y openssh-server sudo && \
     ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key && \
     ssh-keygen -q -N "" -t rsa -f /root/.ssh/id_rsa && \
     cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys && \
-    mkdir /var/run/sshd
+    mkdir /var/run/sshd  && \
+    ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime &&  \
+    echo ${TZ} > /etc/timezone
+# 自定义了该镜像的时间格式及时区 https://www.jb51.net/article/99906.htm
 
 ADD ssh_config /root/.ssh/config
 RUN chmod 600 /root/.ssh/config
